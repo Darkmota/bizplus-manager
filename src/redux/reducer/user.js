@@ -19,6 +19,6 @@ export default (state = initializationState, action) => {
     case ACTION_LOGOUT:
       return initializationState
     default:
-      return PopStateEvent
+      return state
   }
 }

@@ -4,28 +4,28 @@ import './App.css'
 import { connect } from 'react-redux'
 import { Menu, Icon } from 'antd'
 import { withRouter, Route, Link } from 'react-router-dom'
+import Login from './view/Login'
+import Dashboard from './view/Dashboard'
 
 class App extends React.Component {
   constructor (props) {
     super(props)
+    console.log(props)
   }
   render () {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          { this.props.user.username }
-        </header>
+        <Route path="/login" component={Login}></Route>
+        <Route path="/dashboard" component={Dashboard}></Route>
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  visibility: state.visibility,
+  p: state.p
 })
 
 const mapStateToDispatch = dispatch => ({
