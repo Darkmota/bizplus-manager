@@ -3,6 +3,7 @@ import { Layout, Menu, Breadcrumb, Icon } from 'antd'
 import { connect } from 'react-redux'
 import { withRouter, Route, Link } from 'react-router-dom'
 import './Dashboard.css'
+import DragList from './DragList'
 
 const { Header, Content, Footer, Sider } = Layout
 const SubMenu = Menu.SubMenu;
@@ -69,7 +70,9 @@ class Dashboard extends React.Component {
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>Bill is a cat.</div>
+            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+              <DragList></DragList>
+            </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>

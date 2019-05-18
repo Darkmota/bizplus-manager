@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon } from 'antd'
 import { connect } from 'react-redux'
 import { withRouter, Route, Link } from 'react-router-dom'
 
-const { Header, Content, Footer, Sider } = Layout;
-const SubMenu = Menu.SubMenu;
+const { Header, Content, Footer, Sider } = Layout
+const SubMenu = Menu.SubMenu
 
 class Login extends React.Component {
   render() {
@@ -20,7 +20,7 @@ class Login extends React.Component {
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
       </Layout>
-    );
+    )
   }
 }
 
