@@ -25,7 +25,7 @@ class DragList extends Component {
     list: [{
       type: 1,
       content: '软件开发业务',
-      float: false,
+      float: true,
       id: -1
     }, {
       type: 2,
@@ -149,7 +149,7 @@ class DragList extends Component {
         }
         {
           this.state.list.map(item =>
-            <DragItem key={item.id} item={item} onDragStart={this.startDrag.bind(this, item)} onDragEnd={this.endDrag.bind(this, item)}></DragItem>
+            <DragItem draggable key={item.id} item={item} onDragStart={this.startDrag.bind(this, item)} onDragEnd={this.endDrag.bind(this, item)}></DragItem>
           )
         }
         <Input placeholder="content.." onChange={this.onInput.bind(this)}/>

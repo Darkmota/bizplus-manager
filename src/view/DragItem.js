@@ -7,15 +7,21 @@ import Title from './Title'
 import Paragraph from './Paragraph'
 
 class DragItem extends Component {
+  onDragStartHandler = e => {
+    this.props.onDragStart(e)
+  }
+  onDragEndHandler = e => {
+    this.props.onDragEnd(e)
+  }
   render () {
     return (
       this.props.item.type === 1
       ?
-      (<Title visible={!this.props.item.float} content={this.props.item.content}></Title>)
+      (<Title onDragStart={this.onDragStartHandler} onDragEnd={this.onDragEndHandler} visible={!this.props.item.float} content={this.props.item.content}></Title>)
       :
-      (<Paragraph visible={!this.props.item.float} content={this.props.item.content}></Paragraph>)
+      (<Paragraph onDragStart={this.onDragStartHandler} onDragEnd={this.onDragEndHandler} visible={!this.props.item.float} content={this.props.item.content}></Paragraph>)
     )
   }
 }
 
-export default withDrag(withHover(DragItem))
+export default DragItem
