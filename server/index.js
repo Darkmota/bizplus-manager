@@ -1,4 +1,4 @@
-const ContactUs = require('./model/ContactUs')
+const ContactUs = require('./schema/ContactUs')
 
 console.log(ContactUs)
 

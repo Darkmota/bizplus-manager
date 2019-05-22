@@ -1,28 +1,86 @@
-const fs = require('fs')
 const file = require('./utils/file')
+const Query = require('./Query')
+const Conditions = require('./Conditions')
 
-module.exports = class {
-  constructor (model) {
-    this.name = model.name
-    this.query = model.query
+class Model {
+  constructor (schema, tableName) {
+    this._schema = schema
+    this.tableName = tableName
+    this.columns = {}
+    for (let key in schema) {
+      let column = schema[key]
+      if (typeof column === 'function') {
+        this.columns[key] = {
+          type: column,
+          default: () => {
+            return null
+          }
+        }
+      } else {
+        this.columns[key] = {
+          type: column.type,
+          default: (args, context) => {
+            if (typeof column.default === 'function') {
+              return column.default.apply(context || this, args)
+            } else {
+              return column.default
+            }
+          }
+        }
+      }
+    }
     this.isLoaded = false
     this.data = []
     this.nextIndex = 0
   }
-  async load () {
-    let path = `./db/${this.name}.json`
-    return new Promise((resolve, reject) => {
-    })
+  getSchema () {
+    return this._schema
   }
-  async create (doc) {
+  async load () {
+    let path = `./db/${this.tableName}`
+    let result = await file.readTable(path, entity => {
+      let cleanDocument = {}
+      for (let key in this.columns) {
+        let column = this.columns[key]
+        cleanDocument[key] = entity[key] === undefined ? column.default() : column.type(entity[key])
+      }
+      return cleanDocument
+    })
+    console.log(JSON.stringify(result, null, 2))
+  }
+  async findOne (conditions) {
+    let length = this.data.length
+    for (let index = 0; index < length; index++) {
+      let currentDocument = this.data[index]
+      let currentConditions = new Conditions(conditions)
+      if (currentConditions.meet(currentDocument)) {
+        return document
+      }
+    }
+  }
+  async find (conditions) {
+    let length = this.data.length
+    let result = []
+    for (let index = 0; index < length; index++) {
+      let currentDocument = this.data[index]
+      let currentConditions = new Conditions(conditions)
+      if (currentConditions.meet(currentDocument)) {
+        result.push(document)
+      }
+    }
+    return new Query(this, result)
+  }
+  async create (document) {
     if (!this.isLoaded) {
       await this.load()
       this.isLoaded = true
     }
-    if (doc instanceof Array) {
-
+    if (document instanceof Array) {
+      
     } else {
+      
     }
   }
 }
 
+module.exports = Model
