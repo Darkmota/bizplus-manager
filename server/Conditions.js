@@ -37,19 +37,13 @@ class Conditions {
   }
   simpleJudge (documentNodeValue, conditionsNode) {
     console.log('simpleJudge', documentNodeValue, conditionsNode)
+    if (typeof conditionsNode !== 'object') {
+      return documentNodeValue === conditionsNode
+    }
     for (let publicKey in conditionsNode) {
       let conditionValue = conditionsNode[publicKey]
-      if (typeof conditionValue === 'object') {
-        for (let signalType in conditionValue) {
-          let signalValue = conditionValue[signalType]
-          if (!this[signalType](documentNodeValue, signalValue)) {
-            return false
-          }
-        }
-      } else {
-        if (!this[publicKey](documentNodeValue, conditionValue)) {
-          return false
-        }
+      if (!this[publicKey](documentNodeValue, conditionValue)) {
+        return false
       }
     }
     return true

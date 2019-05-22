@@ -55,9 +55,9 @@ class Model {
       this.isLoaded = true
     }
     let length = this.data.length
+    let currentConditions = new Conditions(conditions)
     for (let index = 0; index < length; index++) {
       let currentDocument = this.data[index]
-      let currentConditions = new Conditions(conditions)
       if (currentConditions.meet(currentDocument)) {
         console.log('FINDONE:', currentDocument)
         return currentDocument
@@ -71,13 +71,14 @@ class Model {
     }
     let length = this.data.length
     let result = []
+    let currentConditions = new Conditions(conditions)
     for (let index = 0; index < length; index++) {
       let currentDocument = this.data[index]
-      let currentConditions = new Conditions(conditions)
       if (currentConditions.meet(currentDocument)) {
-        result.push(document)
+        result.push(currentDocument)
       }
     }
+    console.log('FIND:', result)
     return new Query(this, result)
   }
   async create (document) {
