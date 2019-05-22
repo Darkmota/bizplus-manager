@@ -46,19 +46,29 @@ class Model {
       }
       return cleanDocument
     })
+    this.data = result.data
     console.log(JSON.stringify(result, null, 2))
   }
   async findOne (conditions) {
+    if (!this.isLoaded) {
+      await this.load()
+      this.isLoaded = true
+    }
     let length = this.data.length
     for (let index = 0; index < length; index++) {
       let currentDocument = this.data[index]
       let currentConditions = new Conditions(conditions)
       if (currentConditions.meet(currentDocument)) {
-        return document
+        console.log('FINDONE:', currentDocument)
+        return currentDocument
       }
     }
   }
   async find (conditions) {
+    if (!this.isLoaded) {
+      await this.load()
+      this.isLoaded = true
+    }
     let length = this.data.length
     let result = []
     for (let index = 0; index < length; index++) {
@@ -78,7 +88,7 @@ class Model {
     if (document instanceof Array) {
       
     } else {
-      
+
     }
   }
 }

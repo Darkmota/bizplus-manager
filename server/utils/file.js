@@ -48,7 +48,7 @@ module.exports = {
         if (bucketData.nextIndex !== undefined) {
           nextIndex = bucketData.nextIndex
         }
-        data.push(bucketData.data)
+        data.push.apply(data, bucketData.data)
       }
       resolve({
         data: data,

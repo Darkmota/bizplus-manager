@@ -8,10 +8,10 @@ class Conditions {
   $ne (value, signalValue) {
     return value !== signalValue
   }
-  $ge (value, signalValue) {
+  $gt (value, signalValue) {
     return value > signalValue
   }
-  $le (value, signalValue) {
+  $lt (value, signalValue) {
     return value < signalValue
   }
   $gte (value, signalValue) {
@@ -36,6 +36,7 @@ class Conditions {
     }
   }
   simpleJudge (documentNodeValue, conditionsNode) {
+    console.log('simpleJudge', documentNodeValue, conditionsNode)
     for (let publicKey in conditionsNode) {
       let conditionValue = conditionsNode[publicKey]
       if (typeof conditionValue === 'object') {
@@ -46,7 +47,7 @@ class Conditions {
           }
         }
       } else {
-        if (!this.$eq(documentNodeValue, conditionValue)) {
+        if (!this[publicKey](documentNodeValue, conditionValue)) {
           return false
         }
       }
@@ -54,10 +55,14 @@ class Conditions {
     return true
   }
   judge (documentNode, conditionsNode) {
+    console.log('judge', documentNode, conditionsNode)
     for (let publicKey in conditionsNode) {
+      console.log('publicKey', publicKey)
       let conditionValue = conditionsNode[publicKey]
       let documentNodeValue = documentNode[publicKey]
-      if (publicKey[0] === '$') {
+      console.log('documentNodeValue', documentNodeValue)
+      console.log('conditionValue', conditionValue)
+      if (publicKey[0] === '$') { // $or
         if (!this[publicKey](documentNodeValue, conditionsNode)) {
           return false
         }
