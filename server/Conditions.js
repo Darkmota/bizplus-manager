@@ -21,6 +21,7 @@ class Conditions {
     return value <= signalValue
   }
   $in (value, signalValue) {
+    console.log('$in', value, signalValue)
     for (let inValue of signalValue) {
       if (value === inValue) {
         return true
@@ -34,48 +35,35 @@ class Conditions {
         return true
       }
     }
-  }
-  simpleJudge (documentNodeValue, conditionsNode) {
-    console.log('simpleJudge', documentNodeValue, conditionsNode)
-    if (typeof conditionsNode !== 'object') {
-      return documentNodeValue === conditionsNode
-    }
-    for (let publicKey in conditionsNode) {
-      let conditionValue = conditionsNode[publicKey]
-      if (!this[publicKey](documentNodeValue, conditionValue)) {
-        return false
-      }
-    }
-    return true
+    return false
   }
   judge (documentNode, conditionsNode) {
     console.log('judge', documentNode, conditionsNode)
-    for (let publicKey in conditionsNode) {
-      console.log('publicKey', publicKey)
-      let conditionValue = conditionsNode[publicKey]
-      let documentNodeValue = documentNode[publicKey]
-      console.log('documentNodeValue', documentNodeValue)
-      console.log('conditionValue', conditionValue)
-      if (publicKey[0] === '$') { // $or
-        if (!this[publicKey](documentNodeValue, conditionsNode)) {
-          return false
-        }
-      }
-      if (publicKey.indexOf('.') !== -1) {
-        let keys = publicKey.split('.')
-        let currentDocumentNode = documentNode
-        for (let key of keys) {
-          if (currentDocumentNode === null || currentDocumentNode === undefined) {
+    if (typeof conditionsNode !== 'object') {
+      return documentNode === conditionsNode
+    } else {
+      for (let publicKey in conditionsNode) {
+        console.log('publicKey', publicKey)
+        let conditionValue = conditionsNode[publicKey]
+        let documentNodeValue = documentNode[publicKey]
+        console.log('documentNodeValue', documentNodeValue)
+        console.log('conditionValue', conditionValue)
+        if (publicKey[0] === '$') { // $or
+          if (!this[publicKey](documentNode, conditionValue)) {
             return false
           }
-          currentDocumentNode = currentDocumentNode[key]
-        }
-        if (!this.simpleJudge(currentDocumentNode, conditionValue)) {
-          return false
-        }
-      } else {
-        if (!this.simpleJudge(documentNodeValue, conditionValue)) {
-          return false
+        } else {
+          let keys = publicKey.split('.')
+          let currentDocumentNode = documentNode
+          for (let key of keys) {
+            if (currentDocumentNode === null || currentDocumentNode === undefined) {
+              return false
+            }
+            currentDocumentNode = currentDocumentNode[key]
+          }
+          if (!this.judge(currentDocumentNode, conditionValue)) {
+            return false
+          }
         }
       }
     }

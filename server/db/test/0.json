@@ -1,0 +1,19 @@
+{
+  "nextIndex": 1,
+  "data": [
+    {
+      "_id": 0,
+      "a": [100, 200, 300],
+      "b": {
+        "c": "cString",
+        "d": [{
+          "e": "e1String",
+          "f": ["f11String", "f12String"]
+        },
+        {
+          "f": ["f21String", "f22String"]
+        }]
+      }
+    }
+  ]
+}

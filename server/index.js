@@ -1,11 +1,17 @@
 const ContactUs = require('./schema/ContactUs')
+const Test = require('./schema/Test')
 
 console.log(ContactUs)
-
-ContactUs.load()
+console.log(Test)
+/*
 console.log(ContactUs.find({
-  _id: {
-    $gt: 0
-  },
-  name: 'xq'
+  $or: [{
+    name: {
+      $in: ['a', 'b']
+    },
+  }]
+}).document)
+*/
+console.log(Test.find({
+  'a.0': 100
 }).document)
