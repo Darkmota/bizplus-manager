@@ -2,14 +2,23 @@ const file = require('./utils/file')
 const Query = require('./Query')
 const Conditions = require('./Conditions')
 
+function fetch () {
+  return new Promise(async (resolve, reject) => {
+    let path = `./db/${this.tableName}`
+    let result = await file.readTable(path, this.parse.bind(this))
+    this.data = result.data
+    console.log(JSON.stringify(result, null, 2))
+  })
+}
+
 class Model {
-  constructor (schema, tableName) {
+  constructor (schema, tableName, loadFunction) {
     this._schema = schema
     this.tableName = tableName
-    this.columns = {}
     this.isLoaded = false
     this.data = []
     this.nextIndex = 0
+    this.loadFunction = loadFunction
   }
   getSchema () {
     return this._schema
@@ -48,11 +57,8 @@ class Model {
   parse (documentNode) {
     return this._parse(documentNode, this._schema, 0)
   }
-  async load () {
-    let path = `./db/${this.tableName}`
-    let result = await file.readTable(path, this.parse.bind(this))
-    this.data = result.data
-    console.log(JSON.stringify(result, null, 2))
+  async load (fetchFunc, args) {
+    return await fetchFunc.apply(this, args)
   }
   async findOne (conditions) {
     if (!this.isLoaded) {
@@ -71,7 +77,7 @@ class Model {
   }
   async find (conditions) {
     if (!this.isLoaded) {
-      await this.load()
+      await this.load(fetch)
       this.isLoaded = true
     }
     let length = this.data.length
