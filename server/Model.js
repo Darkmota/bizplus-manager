@@ -2,12 +2,16 @@ const file = require('./utils/file')
 const Query = require('./Query')
 const Conditions = require('./Conditions')
 
-function fetch () {
+function fetch (tableName) {
   return new Promise(async (resolve, reject) => {
-    let path = `./db/${this.tableName}`
-    let result = await file.readTable(path, this.parse.bind(this))
-    this.data = result.data
-    console.log(JSON.stringify(result, null, 2))
+    let path = `./db/${tableName}`
+    try {
+      let result = await file.readTable(path, this.parse.bind(this))
+      resolve(result.data)
+      console.log(JSON.stringify(result, null, 2))
+    } catch (err) {
+      reject(err)
+    }
   })
 }
 
@@ -57,8 +61,8 @@ class Model {
   parse (documentNode) {
     return this._parse(documentNode, this._schema, 0)
   }
-  async load (fetchFunc, args) {
-    return await fetchFunc.apply(this, args)
+  async load () {
+    return await fetch.call(this, this.tableName)
   }
   async findOne (conditions) {
     if (!this.isLoaded) {
