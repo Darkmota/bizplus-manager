@@ -5,7 +5,6 @@ import {
 
 const initializationState = {
   isLogin: false,
-  username: 'omegaPi',
   token: ''
 }
 
