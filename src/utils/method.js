@@ -1,0 +1,5 @@
+export const INSERT = Symbol()
+export const UPDATE = Symbol()
+export const APPEND = Symbol()
+export const DELETE = Symbol()
+export const EXCHANGE = Symbol()
