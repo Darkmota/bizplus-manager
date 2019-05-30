@@ -7,18 +7,33 @@ class InputForm extends Component {
     super(props)
   }
   state = {
-    value: this.props.defaultValue
+    defaultValue: this.props.defaultValue,
+    value: this.props.defaultValue,
+    isEdited: false,
+    restoreSymbol: this.props.restoreSymbol
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.restoreSymbol !== this.state.restoreSymbol) {
+      this.props.onChange(nextProps.defaultValue, this.state.isEdited ? -1 : 0)
+      this.setState({
+        value: JSON.parse(JSON.stringify(this.state.defaultValue)),
+        restoreSymbol: nextProps.restoreSymbol,
+        isEdited: false
+      })
+    }
   }
   onChange = event => {
-    let newValue = event.target.value
-    this.setState({value: newValue})
-    this.props.onChange(event)
+    let value = event.target.value
+    let isEdited = this.props.defaultValue !== value
+    let counterDelta = isEdited - this.state.isEdited
+    this.setState({ value, isEdited })
+    this.props.onChange(value, counterDelta)
   }
   render () {
     console.log(this.props.defaultValue, this.state.value)
     return (
       <>
-        <Input style={{ backgroundColor: this.props.defaultValue === this.state.value ? 'white' : blue[1] }} defaultValue={this.props.defaultValue} onChange={this.onChange.bind(this)}></Input>
+        <Input value={this.state.value} style={{ backgroundColor: this.state.isEdited ? blue[1] : 'white' }} defaultValue={this.props.defaultValue} onChange={this.onChange.bind(this)}></Input>
       </>
     )
   }

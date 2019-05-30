@@ -1,4 +1,8 @@
-import { ACTION_CHANGE_LANG, ACTION_INIT_DATA } from '../actionTypes'
+import {
+  ACTION_CHANGE_LANG,
+  ACTION_INIT_DATA,
+  ACTION_SAVE_TRANSLATION
+} from '../actionTypes'
 
 const initializationState = {
   currentLang: 'jp',
@@ -18,6 +22,13 @@ export default (state = initializationState, action) => {
         ...state,
         ...action.data
       }
+    case ACTION_SAVE_TRANSLATION:
+      let newData = {...state}
+      newData[state.currentLang] = {
+        ...newData[state.currentLan],
+        currentLang: action.newLang
+      }
+      return newData
     default:
       return state
   }

@@ -21,12 +21,13 @@ class Dashboard extends React.Component {
   state = {
     collapsed: false,
     lang: 'cn',
-    schema: {},
-    data: {
-      cn: {},
-      en: {},
-      jp: {}
-    }
+    data: null,
+    schema: {}
+  }
+  componentWillReceiveProps (props) {
+    console.log('componentWillReceiveProps')
+    console.log(props)
+    this.setState({ data: props.data })
   }
   shouldComponentUpdate (props, state) {
     return true
@@ -144,7 +145,15 @@ class Dashboard extends React.Component {
             <Button onClick={this.props.logout.bind(this)}>Logout</Button>
           </Header>
           <Content style={{ margin: '0 16px' }}>
-            <Route exact path="/dashboard/menu_translation" component={MenuTranslation}></Route>
+            {
+              this.state.data
+              ?
+              <>
+                <Route exact path="/dashboard/menu_translation" component={MenuTranslation}></Route>
+              </>
+              :
+              <h1>isLoading</h1>
+            }
           </Content>
           <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
         </Layout>
