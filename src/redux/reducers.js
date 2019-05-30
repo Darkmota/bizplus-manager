@@ -1,9 +1,9 @@
 
 import { combineReducers } from 'redux'
 import user from './reducer/user'
-import visibility from './reducer/visibility'
+import lang from './reducer/lang'
 
 export default combineReducers({
   user,
-  visibility
+  lang
 })

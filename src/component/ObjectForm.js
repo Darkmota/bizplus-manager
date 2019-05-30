@@ -2,27 +2,34 @@ import React, { Component } from 'react'
 import { Input, Layout } from 'antd' 
 import ListForm from './ListForm'
 import StringForm from './StringForm'
+import { INSERT, UPDATE } from '../utils/method'
 
 class ObjectForm extends Component {
-  bubble = (method, keyArray, value) => {
-    keyArray.unshift(this.props.keyName)
-    this.props.onBubble(method, keyArray, value)
+  constructor (props) {
+    super(props)
+    console.log('node', this.props.node)
+    console.log('childKey', this.props.childKey)
+  }
+  catchBubble = (method, key, value) => {
+    switch (method) {
+      case UPDATE:
+        this.props.node[key] = value
+        break
+    }
   }
   render () {
     let jsx = []
-    for (let key in this.props.data) {
-      let childData = this.props.data[key]
-      let newKeyArray = Object.assign([], this.props.keyArray)
-      newKeyArray.push(key)
+    for (let key in this.props.node) {
+      let childNode = this.props.node[key]
       let ChildComponent
-      if (childData instanceof Array) {
+      if (childNode instanceof Array) {
         ChildComponent = ListForm
-      } else if (typeof childData === 'object') {
+      } else if (typeof childNode === 'object') {
         ChildComponent = ObjectForm
       } else {
         ChildComponent = StringForm
       }
-      jsx.push(<ChildComponent key={key} keyArray={newKeyArray} onBubble={this.bubble.bind(this)} data={childData}></ChildComponent>)
+      jsx.push(<ChildComponent key={key} node={childNode} childKey={key} onBubble={this.catchBubble.bind(this)}></ChildComponent>)
     }
     return jsx
   }

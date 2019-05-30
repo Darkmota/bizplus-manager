@@ -5,7 +5,7 @@ const Mutation = {
     let returnObj = {}
     await Promise.all(['cn', 'en', 'jp'].map(locale =>
       new Promise(async (resolve, reject) => {
-        axios.get(`./lang/${locale}.json`)
+        axios.get(`../lang/${locale}.json`)
           .then(res => {
             returnObj[locale] = res.data
             resolve()

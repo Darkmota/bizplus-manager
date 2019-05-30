@@ -6,27 +6,33 @@ import StringForm from './StringForm'
 class ListForm extends Component {
   constructor (props) {
     super(props)
-    console.log(this.props.keyArray)
+    console.log('node', this.props.node)
+    console.log('value', this.props.data)
     this.state = {
       tempData: null
     }
   }
-  bubble = (method, keyArray, value) => {
-    keyArray.unshift(this.props.keyName)
-    this.props.onBubble(method, keyArray, value)
+  catchBubble = (method, key, value) => {
+    switch (method) {
+      case INSERT:
+        this.props.node.splice(key, 0, value)
+        break
+      case DELETE:
+        this.props.node.splice(key, 1)
+        break
+      case APPEND:
+        this.props.node.push(value)
+        break
+    }
   }
   onDelete = index => {
-    let keyArray = Object.assign([], this.props.keyArray)
-    keyArray.push(index)
-    this.bubble(DELETE, keyArray)
+    this.catchBubble(DELETE, index, null)
   }
   onInsert = (index, value) => {
-    let keyArray = Object.assign([], this.props.keyArray)
-    keyArray.push(index)
-    this.bubble(INSERT, keyArray, value)
+    this.catchBubble(INSERT, index, value)
   }
   onAppend = value => {
-    this.bubble(APPEND, this.props.keyArray, value)
+    this.catchBubble(APPEND, null, value)
   }
   onTempBubble = (method, keyArray, value) => {
     this.setState({tempData: value})
@@ -34,13 +40,13 @@ class ListForm extends Component {
   render () {
     let jsx = []
     let ChildComponent = StringForm
-    for (let index = 0; index < this.props.data.length; index++) {
-      let childData = this.props.data[index]
+    for (let index = 0; index < this.props.node.length; index++) {
+      let childNode = this.props.node[index]
       let newKeyArray = Object.assign([], this.props.keyArray)
       newKeyArray.push(index)
-      if (childData instanceof Array) {
+      if (childNode instanceof Array) {
         ChildComponent = ListForm
-      } else if (typeof childData === 'object') {
+      } else if (typeof childNode === 'object') {
         ChildComponent = ObjectForm
       } else {
         ChildComponent = StringForm
@@ -48,7 +54,7 @@ class ListForm extends Component {
       jsx.push(
         <Row key={index}>
           <Col span={16}>
-            <ChildComponent data={childData} keyArray={newKeyArray} onBubble={this.bubble.bind(this)}></ChildComponent>
+            <ChildComponent node={childNode} keyArray={newKeyArray} onBubble={this.catchBubble.bind(this)}></ChildComponent>
           </Col>
           <Col span={4}>
             <Button type="dashed" onClick={this.onInsert.bind(this, index)}>insert</Button>
@@ -56,7 +62,6 @@ class ListForm extends Component {
           <Col span={4}>
             <Button type="danger" onClick={this.onDelete.bind(this, index)}>delete</Button>
           </Col>
-          <ChildComponent onBubble={this.bubble.bind(this)} data={childData}></ChildComponent>
         </Row>
       )
     }
@@ -65,7 +70,7 @@ class ListForm extends Component {
         {jsx}
         <Row>
           <Col span={20}>
-            <ChildComponent data={this.state.tempData} keyArray={[]} onBubble={this.onTempBubble.bind(this)}></ChildComponent>
+            <ChildComponent data={this.state.tempData} key={[]} onBubble={this.onTempBubble.bind(this)}></ChildComponent>
           </Col>
           <Col span={4}>
             <Button type="default" onClick={this.onAppend.bind(this)}>append</Button>
