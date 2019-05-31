@@ -3,11 +3,6 @@ import { Input, Layout } from 'antd'
 import { UPDATE } from '../utils/method'
 
 class StringForm extends Component {
-  constructor (props) {
-    super(props)
-    console.log('node', this.props.node)
-    console.log('childKey', this.props.childKey)
-  }
   bubble = (method, value) => {
     this.props.onBubble(method, this.childKey, value)
   }

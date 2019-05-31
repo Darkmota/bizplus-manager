@@ -3,17 +3,11 @@ import ReactDOM from 'react-dom'
 
 const withHover = function (WrappedComponent) {
   return class extends Component {
-    constructor(props) {
-      super(props)
-    }
-
     onMouseEnterHandler = () => {
-      console.log('enter')
       this.setState({isHover: true})
     }
 
     onMouseLeaveHandler = () => {
-      console.log('leave')
       this.setState({isHover: false})
     }
 

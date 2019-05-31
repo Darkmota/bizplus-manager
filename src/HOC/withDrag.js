@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom'
 
 const withDrag = function (WrappedComponent) {
   return class extends Component {
-    constructor(props) {
-      super(props)
-    }
-
     onDragStartHandler = e => {
       console.log('dragstart')
       this.props.onDragStart(e)

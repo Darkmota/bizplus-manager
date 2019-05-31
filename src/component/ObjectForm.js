@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Input, Layout } from 'antd' 
 import ListForm from './ListForm'
 import StringForm from './StringForm'
-import { INSERT, UPDATE } from '../utils/method'
+import { UPDATE } from '../utils/method'
 
 class ObjectForm extends Component {
   constructor (props) {
@@ -14,6 +13,8 @@ class ObjectForm extends Component {
     switch (method) {
       case UPDATE:
         this.props.node[key] = value
+        break
+      default:
         break
     }
   }

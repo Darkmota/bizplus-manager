@@ -4,8 +4,6 @@ import {
   ACTION_SAVE_DATA
 } from '../actionTypes'
 
-import axios from '../../axios'
-
 const initializationState = {
   currentLang: 'jp',
   allLangs: ['jp', 'cn', 'en'],

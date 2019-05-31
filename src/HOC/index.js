@@ -1,9 +1,9 @@
 import withHover from './withHover'
 import withDrag from './withDrag'
-import withLang from './withLang'
+import withDataForm from './withDataForm'
 
 export {
   withHover,
   withDrag,
-  withLang
+  withDataForm
 }

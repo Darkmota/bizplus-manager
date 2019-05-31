@@ -10,7 +10,8 @@ class InputForm extends Component {
     defaultValue: this.props.defaultValue,
     value: this.props.defaultValue,
     isEdited: false,
-    restoreSymbol: this.props.restoreSymbol
+    restoreSymbol: this.props.restoreSymbol,
+    saveSymbol: this.props.saveSymbol
   }
   componentWillReceiveProps (nextProps) {
     if (nextProps.restoreSymbol !== this.state.restoreSymbol) {
@@ -18,6 +19,13 @@ class InputForm extends Component {
       this.setState({
         value: this.state.defaultValue,
         restoreSymbol: nextProps.restoreSymbol,
+        isEdited: false
+      })
+    }
+    if (nextProps.saveSymbol !== this.state.saveSymbol) {
+      this.setState({
+        defaultValue: this.state.value,
+        saveSymbol: nextProps.saveSymbol,
         isEdited: false
       })
     }
