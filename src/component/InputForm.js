@@ -24,13 +24,13 @@ class InputForm extends Component {
   }
   onChange = event => {
     let value = event.target.value
-    let isEdited = this.props.defaultValue !== value
+    let isEdited = this.state.defaultValue !== value
     let counterDelta = isEdited - this.state.isEdited
     this.setState({ value, isEdited })
     this.props.onChange(value, counterDelta)
   }
   render () {
-    console.log(this.props.defaultValue, this.state.value)
+    // console.log(this.props.defaultValue, this.state.value)
     return (
       <>
         <Input value={this.state.value} style={{ backgroundColor: this.state.isEdited ? blue[1] : 'white' }} defaultValue={this.props.defaultValue} onChange={this.onChange.bind(this)}></Input>

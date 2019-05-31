@@ -4,7 +4,7 @@ export const ACTION_PULL_DATA = Symbol()
 export const ACTION_SET_VISIBILITY = Symbol()
 export const ACTION_CHANGE_LANG = Symbol()
 export const ACTION_INIT_DATA = Symbol()
-export const ACTION_SAVE_TRANSLATION = Symbol()
+export const ACTION_SAVE_DATA = Symbol()
 
 export const actionLogin = data => ({
   type: ACTION_LOGIN,
@@ -25,8 +25,8 @@ export const actionChangeLang = newLang => ({
   newLang
 })
 
-export const actionSaveTranslation = data => ({
-  type: ACTION_SAVE_TRANSLATION,
+export const actionSaveData = data => ({
+  type: ACTION_SAVE_DATA,
   data
 })
 

@@ -1,8 +1,10 @@
 import {
   ACTION_CHANGE_LANG,
   ACTION_INIT_DATA,
-  ACTION_SAVE_TRANSLATION
+  ACTION_SAVE_DATA
 } from '../actionTypes'
+
+import axios from '../../axios'
 
 const initializationState = {
   currentLang: 'jp',
@@ -22,13 +24,11 @@ export default (state = initializationState, action) => {
         ...state,
         ...action.data
       }
-    case ACTION_SAVE_TRANSLATION:
-      let newData = {...state}
-      newData[state.currentLang] = {
-        ...newData[state.currentLan],
-        currentLang: action.newLang
-      }
-      return newData
+    case ACTION_SAVE_DATA:
+      let newState = { ...state }
+      newState.data = { ...action.data }
+      
+      return newState
     default:
       return state
   }
