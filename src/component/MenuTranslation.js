@@ -16,29 +16,16 @@ const { TabPane } = Tabs
 class MenuTranslation extends Component {
   state = {
     editedCounter: 0,
-    scopedData: {},
+    scopedData: { ...this.props.scopedData },
     restoreSymbol: Symbol()
   }
 
-  componentDidMount () {
-    let scopedData = {}
-    for (let lang of this.props.allLangs) {
-      scopedData[lang] = {}
-      for (let key in this.props.data[lang]) {
-        let value = this.props.data[lang][key]
-        console.log(key, value)
-        if (typeof value === 'string') {
-          scopedData[lang][key] = value
-        }
-      }
-    }
-    this.setState({ scopedData })
+  componentWillReceiveProps (nextProps) {
+    this.setState({ scopedData: { ...nextProps.scopedData } })
   }
 
   onChange = async (lang, key, value, counterDelta) => {
-    console.log(lang, key, value, counterDelta)
-    let newScopedData = Object.assign({}, this.state.scopedData)
-    console.log(newScopedData)
+    let newScopedData = { ...this.state.scopedData }
     newScopedData[lang][key] = value
     this.setState({
       editedCounter: this.state.editedCounter + counterDelta,
@@ -47,12 +34,11 @@ class MenuTranslation extends Component {
   }
 
   onTabChange = newLang => {
-    console.log({newLang})
     this.props.changeLang(newLang)
   }
-  
+
   onRestore = () => {
-    this.setState({restoreSymbol: Symbol()})
+    this.setState({restoreSymbol: Symbol(), editedCounter: 0})
   }
 
   render() {
@@ -80,7 +66,7 @@ class MenuTranslation extends Component {
         <Tabs defaultActiveKey="jp" onChange={this.onTabChange}>
           {tabPanes}
         </Tabs>
-        <Button type="primary" disabled={!this.state.editedCounter} block onClick={this.props.onSave.bind(this)}>save</Button>
+        <Button type="primary" disabled={!this.state.editedCounter} block onClick={this.props.onSave.bind(this, { ...this.state.scopedData })}>save</Button>
         <Button type="dashed" disabled={!this.state.editedCounter} block onClick={this.onRestore}>restore</Button>
       </>
     )
@@ -111,11 +97,12 @@ const loader = node => {
   return returnValue
 }
 
-const saver = data => {
+const saver = (data, newData) => {
   for (let key in data) {
     let value = data[key]
     if (typeof value === 'string') {
-      data[key] = this.props.scopedData[key]
+      console.log(data[key], newData[key])
+      data[key] = newData[key]
     }
   }
 }

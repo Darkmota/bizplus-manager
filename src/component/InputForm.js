@@ -16,11 +16,18 @@ class InputForm extends Component {
     if (nextProps.restoreSymbol !== this.state.restoreSymbol) {
       this.props.onChange(nextProps.defaultValue, this.state.isEdited ? -1 : 0)
       this.setState({
-        value: JSON.parse(JSON.stringify(this.state.defaultValue)),
+        value: this.state.defaultValue,
         restoreSymbol: nextProps.restoreSymbol,
         isEdited: false
       })
     }
+    /*
+    this.setState({
+      // defaultValue: nextProps.defaultValue,
+      value: nextProps.defaultValue,
+      isEdited: false
+    })
+    */
   }
   onChange = event => {
     let value = event.target.value

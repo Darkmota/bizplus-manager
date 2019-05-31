@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { actionSaveTranslation, actionChangeLang, actionSaveData } from '../redux/actionTypes'
+import { actionChangeLang, actionSaveData } from '../redux/actionTypes'
 
 
 const withLang = function (WrappedComponent, loader, saver) {
@@ -18,17 +18,18 @@ const withLang = function (WrappedComponent, loader, saver) {
       this.setState({ scopedData: { ...scopedData } })
     }
 
-    onSave = () => {
+    onSave = newScopedData => {
+      console.log('newScopedData', newScopedData)
       let data = { ...this.props.data }
       for (let lang of this.props.allLangs) {
-        saver(data[lang], this.state.scopedData[lang])
+        saver(data[lang], newScopedData[lang])
       }
       this.props.save(data)
     }
 
     render() {
       return (
-        <WrappedComponent onSave={this.onSave.bind(this)} {...this.props}></WrappedComponent>
+        <WrappedComponent onSave={this.onSave.bind(this)} scopedData={this.state.scopedData} {...this.props}></WrappedComponent>
       )
     }
   }
